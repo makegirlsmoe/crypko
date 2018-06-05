@@ -1,0 +1,271 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[fontset=ubuntu]{ctex}
+%% Fix Chinese punctuation centering bug
+\setCJKmainfont{AR PL SungtiL GB}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% enable multiple citing at once
+\usepackage{cite}
+%% enable url in citing
+\usepackage{url}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{titling}
+\usepackage[export]{adjustbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+%% cross-ref list
+%% https://tex.stackexchange.com/questions/1230/reference-name-of-description-list-item-in-latex
+\makeatletter
+\let\orgdescriptionlabel\descriptionlabel
+\renewcommand*{\descriptionlabel}[1]{%
+  \let\orglabel\label
+  \let\label\@gobble
+  \phantomsection
+  \edef\@currentlabel{#1}%
+  %\edef\@currentlabelname{#1}%
+  \let\label\orglabel
+  \orgdescriptionlabel{#1}%
+}
+\makeatother
+
+%% Add logo
+% https://www.overleaf.com/15705485shkbqqyzyxqs#/59720786/
+% enable fancy page style on every page (the first page is excluded somehow?)
+\pagestyle{fancy}
+% first, clear default header
+% https://texblog.org/2007/11/07/headerfooter-in-latex-with-fancyhdr/
+\fancyhead{}  
+% do not remove rule line
+% \renewcommand{\headrulewidth}{0pt}
+% \renewcommand{\footrulewidth}{0pt}
+\setlength\headheight{55.0pt}
+\addtolength{\textheight}{-55.0pt}
+% add logo aligned to the left
+\lhead{\adjincludegraphics[height=55pt, trim={0 {.2\height} 0 {.2\height}},clip]{logo-05.png}}
+
+
+%% Add image above the title
+\pretitle{
+  \begin{center}
+  \LARGE
+  %  trim={<left> <lower> <right> <upper>}
+  % width=\textwidth,
+  \adjincludegraphics[width=\textwidth,trim={0 {.20\height} 0 {.20\height}},clip]{introduction2.png}\\
+}
+\posttitle{\end{center}}
+
+\title{加密娘白皮书 \\
+  \large 基于生成对抗网络的加密收藏品游戏 \\
+  \rightline{\small ver 0.8.1}
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\renewcommand\abstractname{摘　要}
+\begin{abstract}
+
+2018年，有两个概念持续受到关注：人工智能与区块链技术。
+
+然而大多数人对这两个技术不了解，或者存在不同程度的误解：他们能看到技术的支持者绘制的一副未来的美好蓝图，却不清楚技术的发展状况，现在能做到什么，又能给我们的生活带来什么直观的变化。
+另一方面，两项技术独立发展、互不依存，很少有产品能够结合两者独特的优势，更不用说推向广大消费者了。
+
+为了结合了两者的优势并给予大众直观的体验，我们推出加密娘（Crypko），一款基于生成对抗网络（GAN，Generative Adversarial Networks）的加密收藏品（Cryptocollectible）游戏，其优势在于：
+\begin{itemize}
+\item 区块链与智能合约保证了数字资产的价值。
+\item 生成对抗网络能够快速、多样地生成具有审美、收藏价值的二次元人物画像。
+\item 智能合约能够利用生成网络的性质，规定并执行两张生成的画像的有机结合，提供了游戏的趣味性与不可预测性。
+\end{itemize}
+
+\end{abstract}
+
+% no page style on first page
+\thispagestyle{empty}
+
+\newpage
+
+\section{背景}
+
+2017年11月28日 Axiom Zen 推出的谜恋猫（CryptoKitties）游戏\cite{cryptokitties}，让加密收藏品游戏成为了备受瞩目的一种新型区块链应用模式。借此机遇，不少同类产品\cite{cryptomons,cryptocountries,cryptopets,cryptoarts,cryptolandmarks,cryptofighters,etheremon,etherwaifu}试图从不同的角度对加密收藏品进行创新，然而现有的游戏模式在以下几个方面还有改善的空间：
+作为这类游戏的对象，加密收藏品是一种由区块链保障其唯一性与所有权的数字收藏品。特别地，如果两个加密收藏品可以生育后代，则称为可繁衍的加密收藏品。
+
+\begin{description}
+\item [问题1\label{problem:1}] 加密收藏品的外观普遍由零散的部件通过固定的规则拼凑而成。对于可繁衍的加密收藏品来说，这种拼凑让遗传效应显得生硬。
+\item [问题2\label{problem:2}] 加密收藏品外观不够多元。现有游戏中加密收藏品各个部件的种类加起来普遍不过百余种，玩家易出现审美疲劳。
+\item [问题3\label{problem:3}] 游戏运营商规定的属性的稀有程度决定加密收藏品的价值。而在现实世界中，良好的收藏品，其价值是由市场对其自然稀有程度所决定的。
+\end{description} 
+
+\subsection{谜恋猫带来的全新的区块链应用模式}
+
+谜恋猫游戏带来了诸多新思路：
+
+\begin{enumerate}
+\item 首次币发行（ICO，Initial Coin Offering）不再是区块链项目募集资金、盈利的唯一模式。在现有区块链平台发布去中心化应用同样简单可行，这鼓励了区块链应用的落地。
+\item 在基于区块链的不可替代代币协议（ERC-721）的规范下，加密收藏品具有了不可更改性（immutable），不可替代性（non-fungible），从而具有了数字稀缺性（digital scarcity），也就具有了交换价值。
+\item 通过游戏的形式，用户能够绕开晦涩难懂的区块链技术本身，去体验这项新技术带来的便利与变革。
+\item 通过收取生育费、交易手续费，以及官方拍卖零代猫，游戏运营商可以取得可持续的盈利。
+\item 在加密收藏品的概念的基础上，提出的``可繁衍的''加密收藏品（以下简称为``收藏品''）允许用户从已有收藏品生育（合成）新的加密收藏品，从而提高游戏的趣味性与用户粘性。
+\end{enumerate}
+
+我们高度认同，并且希望借助加密娘来发扬谜恋猫的这些新理念。
+
+\subsection{谜恋猫的变种与新的尝试}
+
+自谜恋猫诞生以来，不少同类产品试图从不同的角度进行创新。一个例子是加入战斗元素\cite{cryptofighters,fishbank,cryptomons,etheremon} --- 提升游戏性固然是一个好的出发点，然而目前区块链的交易速度尚不足以很好地实现传统的即时或回合制游戏。
+
+此外，有的游戏尝试不拘泥于同一个物种，而是延伸到更多的动物种类\cite{cryptopets,etheremon}，或者是非生物收藏品，如领土\cite{cryptocountries}、名胜\cite{cryptolandmarks}、名画\cite{cryptoarts}等。然而这类游戏为此一般会去除加密收藏品的可繁衍属性，用户不再能亲手创造新的加密收藏品了。
+
+\subsection{现有加密收藏品游戏的局限性}
+\subsubsection{遗传效应缺乏连续性，属性缺乏多样性}
+
+以 ERC-721 为规范的拍卖市场为加密收藏品提供了实现交换价值的平台。在此基础上，生育作为用户利用已有的加密收藏品去创造未知的新收藏品的唯一途径，是提高用户粘性，取得可持续的盈利的一个重要元素。
+
+在区块链上，比起一般的收藏品，可繁衍的收藏品面临着一个新的问题：亲代与子代的连续性。人们期待“繁衍”的过程会有遗传与变异效应，即子代具有亲代、祖亲代的特性的同时拥有一定自己的特性。
+
+最好的解决方法，是在每一次繁衍时为亲代专门绘制一幅子代的画像，但这显然无法通过人力完成。为了体现遗传效应，现有加密收藏品游戏一般依靠对其亲代的基因进行类遗传学的组合与突变，来确定子代基因，进而确定其部件的组合\cite{cryptokitties,etherwaifu,cryptofighters}。这种做法虽然免去了一幅幅绘制的成本，但由于不同的属性之间完全独立，组合过于生硬，导致``繁衍收藏品''实质上沦为了``换装''。
+
+即使部件的组合数目是巨大的，玩家依旧很容易出现审美疲劳。这是由于不同的收藏品仅仅是部件的排列组合，而人为绘制的部件的种类通常十分有限。事实上，现有此类游戏中每一个部件一般仅有预先定义的数十种，而一个收藏品一般仅由不到十种部件构成。这使得收藏品的唯一性仅仅体现在部件组合的唯一性，而没有体现在视觉直观上的唯一性上。
+
+为此，部分游戏通过限量发行不由部件组成的加密收藏品，来试图改善部件组合的生硬性。然而这类特殊的收藏品在繁衍过程中基本上丧失了遗传的连续性，同时也打破了收藏品的唯一性。
+
+\subsubsection{价值 = 人为规定的稀有程度 = 各部件稀有程度之和？}
+
+根据市场现状，目前主流的加密收藏品游戏中，收藏品的价格取决于其属性的稀少程度，或者是游戏运营商直接在属性上标注的稀有程度。
+
+虽然用稀有度决定收藏品的价值，是现实世界中收藏品定价的原理，但将该逻辑生搬硬套到加密收藏品游戏中有其不合理之处：
+
+\begin{itemize}
+\item 现实中的收藏品的稀有性本身就是其自然属性之一，而加密收藏品的稀有度完全取决于游戏开发者，即收藏品的定价法则实质上掌握在游戏运营方的手中，这使得游戏的合理性与去中心化性大打折扣。
+\item 人为规定稀有度的做法与人类对美的自然追求相悖，使得加密收藏品不再体现其内在价值与美，而沦为交易获利的筹码。
+\end{itemize}
+
+\subsection{生成对抗网络}
+
+生成对抗网络（GAN）\cite{goodfellow2014generative}是一类深度学习算法，用于训练神经网络生成几可乱真的图片。自2014年 Ian Goodfellow 提出以来，GAN 得到了快速的发展，能有效生成高清仿真的图片\cite{radford2015unsupervised,karras2017progressive}，展现出广泛的应用潜力。
+
+\subsubsection{MakeGirlsMoe: 让人工智能绘制二次元少女}
+
+在加密娘之前，我们专注于研究利用生成对抗网络生成二次元头像。2017年8月，我们公开了自定义二次元少女头像的网站 \href{http://make.girls.moe/#/}{make.girls.moe}。
+
+MakeGirlsMoe （MGM）在优质的二次元数据集上训练的GAN模型，能够按照用户的设定，生成多样的、接近专业画师水准的二次元角色面部画像。公布时的初代模型可以在浏览器上生成尺寸为 $128 \times 128$ 的头像，而同年12月公布的第三代模型已经可以稳定地生成 $256 \times 256$ 大小的头像。
+
+MGM 吸引了大量世界各地爱好者的访问。截至2018年2月1日，共计访问150万人次，单日最高访问超23万人次，访问的主要来源为日本、美国、中国与俄罗斯等国家与地区。
+
+在学术界中，MGM 也得到了认可。网站公开后，我们在 arXiv 上以论文形式\cite{jin2017towards}公开了网站背后的生成对抗网络技术。同年12月，我们的论文\href{https://nips2017creativity.github.io/}{发表在 NIPS2017 的机器学习创造与设计研究展示会上}。
+
+\subsubsection{纯 GAN 应用的落地困境}
+
+最简单的 GAN 的落地应用模式（本文称为纯 GAN 应用），是通过提供 GAN 生成图片的服务来获得盈利。这包括直接出售GAN的生成图片，不包括用 GAN 进行辅助设计等情况。
+
+作为免费的平台，MGM 虽然广受用户好评，却难以找到可持续的盈利模式。此问题不局限于 MGM，几乎任何纯 GAN 应用都面临着相同的困境，其原因在于无论生成的图片的质量如何精致，训练后的模型在理论上可以无限生成同类型的图片；这一类无限生产并分享的资源没有数字稀缺性，进而没有交换价值。由此可见，GAN 的优势恰恰阻碍了其落地。
+
+要让 GAN 生成的图片具有交换价值，大体上需要采取两个措施：
+
+\begin{enumerate}
+\item 从源头上，禁止 GAN 的滥用。如通过付费制度来约束用户使用 GAN 去生成图片的数量。
+\item 从所有权上，通过明确生成图片的拥有者，使图片具有数字稀缺性。
+\end{enumerate}
+
+措施1很自然，但若不采取措施2，一个用户将购买的生成图片分享到社交网站时会有所顾忌。然而，措施2几乎是不可能的——直到ERC-721的到来。
+
+\newpage
+
+\section{产品}
+
+加密娘是以太坊上的可收藏的虚拟角色卡牌。用户可以交易卡牌，以及利用现有的卡牌合成新的卡牌。
+
+每一只加密娘拥有一串编码（code）和一组属性（attributes），统称为加密娘的表示（representation）。两者共同决定一张唯一的 $512 \times 512$ 像素大小的加密娘面部画像。属性用于显式地决定加密娘明确的视觉特征，而编码用于隐式地调控外观与细节。
+
+每一只加密娘拥有的属性，在一定程度上反映在外观上。有别于市面上现有的加密收藏品游戏，两只加密娘即使具有一致的属性，一般来说她们的外观也完全不同。
+
+用户可以利用其拥有的两张卡牌，合成一张新的卡牌。在合成了新的加密娘后，原加密娘不会消失，但是会进入冷却，并且冷却时间随着用于合成的次数增加而增加。合成的结果无法预测，但原加密娘的特性将会在一定程度上反映于新加密娘。用户也可以通过卡牌租赁，借用他人的加密娘进行合成。
+
+不是由其他卡牌合成而来的卡牌，称为零次迭代娘或零代娘。零代娘一共有5万只，其编码与属性事先由官方公开。每过15分钟，一只零代娘自动通过官方拍卖的形式进入市场。
+虽然模型能够生成的加密娘的可能性是不可胜数的，理论上一只加密娘也能用于合成无数新的加密娘，但随着加密娘的迭代数增高，用于合成的次数增加，合成后冷却时间也会越来越长；同时，在零代娘的发行结束后，用户只能通过合成得到新的加密娘。也就是说，加密娘的增速与总数会被控制在一定的范围内。
+
+Crypko 的名字来源于 Crypto + ko。“子”，日语中读作 ko，包含年少的男女、年轻的女子、女性名字结尾字三种使用方法。在第二种用法中，也可以写作“娘”，所以翻译为加密娘。
+
+\section{优势}
+加密娘致力于用生成对抗网络的技术，去解决加密收藏品的游戏模式现有的\ref{problem:1}至\ref{problem:3}，进而发现加密收藏品游戏新的生命力。
+
+\subsection{连续地合成}
+
+合成的连续性，是指在图像空间中合成结果处于合成素材之间连续变动的中间位置的性质。从表象上，连续合成的结果几乎处处不与合成素材的任何一部分重样。
+
+在加密娘中，合成依据的是生成网络隐藏空间中的向量运算\cite{radford2015unsupervised}。生成网络输入一个表示向量，并输出一个对应的图像。所以如果我们恰当地“融合”两张图像的表示，就可以生成全新而具有两者通性的图像。
+
+这样一来，在加密娘中，\ref{problem:1}与\ref{problem:2}得到了解决。合成的过程不是对两只加密娘的外观进行简单的拼凑接合，而是从零开始根据双方的编码与属性有机地整合其特质，生成新的加密娘。这得益于生成网络通过学习了大量画作后能够很好地习得绘画的原理，并能理解加密娘的特性以及不同加密娘之间的区别。
+
+这种合成方式还给这款充满不确定性的游戏引入了一点用户可以掌控的确定性：用户选择可爱的加密娘就能有更大概率合成可爱的新加密娘。
+
+这种更为直观的连续合成方式，以及合成结果的多样性，相信会是加密娘游戏的一大乐趣。
+
+\subsection{价值 = 萌}
+
+除了连续性给游戏带来的乐趣，基于以下两个特性，生成网络的编码还改变了这类游戏的定价规则：
+
+\subsubsection{隐式表示的复杂性}
+
+设置加密娘的一系列属性的意图在于方便用户筛选，而不是去影响其价值，所以我们不会操纵属性的稀有度。实际上，加密娘的外观隐式地表示在编码中，而这才是决定了加密娘是否美，是否萌的主要因素。这使得加密娘游戏不再有所谓的优异的属性——比如金发加密娘并不比黑发加密娘有优势——只有优异的编码。而隐式表示的机制正是深度学习的黑箱，因而目前科技水平无法破解编码。
+
+\subsubsection{编码的整体性}
+
+由于编码的机理无法被破解，编码的任何片段都不具有含义，也就是说编码具有整体性。这意味着一个加密娘如果被认为是优异的，那只是证明了她的编码整体，而不是其中的某几位的优异性。换句话说，加密娘的价值，体现在其作为一个有机的、不可分割的整体，而不是其某些部件具有较高的价值。也就是说，加密娘作为一件加密收藏品的价值就从生硬离散的标签中剥离开来。
+
+这使得定价规则变得更为主观。用户在交易加密娘时，无法依据没有价值的属性或者无法解读的编码来进行估价。表示与价格的分离，使得根据数据计算价格变得不再现实。这种情形下，用户唯一能够信赖的估价标准，就只有主观上加密娘可爱的程度。
+
+而这正是我们所设想的加密收藏品的正确游戏模式：用户用眼睛进行主观判断，即可估计加密娘的价格，并依此进行交易与合成。
+
+这种游戏模式相对于现有加密收藏品游戏的优势在于：
+
+\begin{enumerate}
+	\item 有效降低了游戏门槛。试想不论是现实生活中的收藏品拍卖、抑或是市面上的加密收藏品游戏，用户即使能够顺利建立账号、充入现金，在交易之前仍然有一层心理障碍：对定价规则缺乏了解，缺乏购买经验，会让用户怀疑自己是否能买到划算的收藏品。而加密娘通过用人类难以分析的生成网络的参数、结构，以及在合成中加入随机的因素，让有经验的人相对新手的优势不再明显。
+
+	\item 通过打破定价规则的客观性，游戏运营商不再能轻易控制市场的价格。市面上的加密收藏品游戏中，运营商只要减少某一个基因的出现频次，就能提高对应属性的稀有度，进而提高其价值。而通过引入主观性强的定价规则，每一名玩家的喜好都不同，只有受更多用户喜爱的加密收藏品才能有高的定价。这让加密收藏品游戏从技术层面上的去中心化，升级为游戏体验上的去中心化。\ref{problem:3}由此迎刃而解。
+
+\end{enumerate}
+
+\section{概念验证}
+
+加密娘预计将于五月上旬在 Rinkeby 测试链上进行公测，公开用户界面在 \href{http://crypko.ai}{ crypko.ai }上，以检验应用的可行性，提高系统稳定性，获取反馈并改善用户体验。
+
+未注册的访客可以通过桌面或移动终端进入市场浏览加密娘。
+
+用户也可以在 Chrome 或者 Firefox 上使用 \href{https://metamask.io/}{MetaMask 插件}，接入 Rinkeby 测试链后创建游戏账户。用户可 \href{https://www.rinkeby.io/#faucet}{免费获取 Rinkeby 以太}，并进行交易与合成，尝试游戏的所有功能。
+
+\section{结语}
+
+由于 GAN 是一种生成图片的普适性方法，我们希望加密娘游戏不仅仅是作为当前加密收藏品游戏分类下的一个新成员，更是给目前同质化严重的加密收藏品游戏打开了一种新的思路，来提升收藏品的内在价值，提高游戏的趣味性、合理性。
+
+另一方面，由于 ERC-721 是一个能赋予数字资产以价值的天然载体，我们希望在加密娘首个尝试利用区块链技术来实现 GAN 的落地之后，能有更多深度学习开发者愿意在区块链平台上尝试 GAN 或者 VAE， LSTM 等其他生成模型的落地，通过游戏的形式，向一般公众展示AI作为创造者的价值。同时，我们相信在以太坊上，好的代币终究会驱逐劣的代币，这将鼓励研究者们不断推进生成模型技术的发展。
+
+我们团队相信高质量的加密娘生成模型、直观的价值评价标准，是加密娘能让更多人无所顾忌地参与进来的得天独厚的优势。加密娘能够让更多人了解到区块链应用与人工智能的结合是可行的，是有实际意义的，还是有趣的。
+
+我们团队相信区块链的潜力，相信加密收藏品的意义。收藏品因为稀有而珍贵，但我们也坚信加密收藏品不应该只是根据人为规定的稀有度贴上价格的标签。人们愿意珍藏加密收藏品的理由，应该是它直击心灵的美，是她千姿百态的萌。
+
+\vspace{5mm}
+
+\begin{flushright}
+ Crypko 团队
+\end{flushright}
+
+\renewcommand\refname{参考文献}
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
