@@ -8,7 +8,7 @@ Community Contributors (sorted alphabetically)
 
   * Japanese translation of [Crypko whitepaper](https://gorosuke.blue/2018/06/05/post-2669/)
 
-* **[邪推 系](hhttps://twitter.com/anntamania)**
+* **[邪推 系](https://twitter.com/anntamania)**
 
   * Japanese translation of [Crypko FAQs](https://crypko.ai/#/faqs)
 
