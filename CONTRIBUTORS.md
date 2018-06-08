@@ -7,7 +7,7 @@ Community Contributors (sorted alphabetically)
 
 * **[pacochi](https://pawoo.net/@pacochi)**
 
-  * Prototype of [Origins Tree](http://let.hatelabo.jp/pacochi/let/hJmc-bbGmZpw), integrated in out frontend.
+  * Prototype of [Origins Tree](http://let.hatelabo.jp/pacochi/let/hJmc-bbGmZpw), integrated in our frontend.
 
 
 * **[邪推 系](https://twitter.com/anntamania)**
