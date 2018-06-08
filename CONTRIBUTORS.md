@@ -1,6 +1,6 @@
 Community Contributors (sorted alphabetically)
 
-* **[pacochi](pawoo.net/@pacochi)**
+* **[pacochi](https://pawoo.net/@pacochi)**
 
   * Prototype of [Origins Tree](http://let.hatelabo.jp/pacochi/let/hJmc-bbGmZpw), integrated in out frontend.
 
