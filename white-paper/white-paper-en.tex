@@ -102,16 +102,16 @@
 \begin{abstract}
 
 We propose a new type of online trading card game (TCG) where cards are cryptocollectibles whose images are created by generative adversarial networks (GAN), an promising AI technique. 
-It has several advantages over conventional online TCG:
+It has four advantages over conventional online TCGs:
 \begin{enumerate}
 \item Each card, drawn by AI, is unique in appearance.
 \item Users can freely trade cards with effectively real money in the market.
-\item Users have true ownership of their cards, including their copyrights. % thanks to censorship-resistant Ethereum.
-\item The same set of cards can naturally extend to various games. % thanks to borderless and permissionless Etherereum
+\item Users have true, censorship-resistant ownership of their cards, including their copyrights.
+\item Cards have natural, borderless and permissionless extension on various derivative games. 
 \end{enumerate}
 
-We are developing Crypko as an example of GAN-empowered cryptocollectible games with cards of anime characters.
-The same idea can be applied to other domains of images as well.
+We are developing Crypko as an example of GAN-empowered cryptocollectible game where the images of cards are avatars of anime characters.
+This idea can be applied to other domains of images as well.
 
 \end{abstract}
 
@@ -139,7 +139,7 @@ To address this gap, we propose Crypko, a cryptocollectible game empowered by ge
 
 On November 28, 2017, the debut of CryptoKitties\cite{cryptokitties} brought cryptocollectible game, a new type of decentralized application (DAPP), under the spotlight, after which many companies and teams proposed their cryptocollectible games\cite{cryptomons,cryptocountries,cryptopets,cryptoarts,cryptolandmarks,cryptofighters,etheremon,etherwaifu}. As the subject of this type of games, cryptocollectibles are digital collectible whose ownership and uniqueness are secured by blockchain, and are referred to as breedable when two of them are capable of giving birth to a new one.
 
-Cryptocollectible game has several advantages over conventional online TCG:
+Cryptocollectible game has several advantages over conventional online TCG:\footnote{Compare this list with the list in abstract to see the advantages of a GAN-empowered cryptocollectible game over a traditional one.}
 \begin{enumerate}
 \item Users can freely trade cards with effectively real money in the market.
 \item Users have true ownership (in terms of in-game property, not in real world) of their cards, thanks to censorship-resistance of Ethereum.
@@ -261,7 +261,7 @@ A Crypko without origins is an Iteration 0 Crypko (or simply Iter 0 Crypko). 50 
 
 In theory, a Crypko can fuse into infinite number new Crypkos, with the total population of Crypko and its growth in control: the cooldown takes longer when the Crypko has a higher iteration number or has been fused for more times; after we distribute all Iter 0 Crypkos, fusion is the only way to create a new Crypko.
 
-Etymologically, Crypko is the composition of ``Crypto'' and ``ko'', which means a boy or a girl in Japanese.
+Morphologically, Crypko is the composition of ``Crypto'' and ``ko'', which means a boy or a girl in Japanese.
 
 \section{Advantages}
 
@@ -357,13 +357,18 @@ Notice that if the owner decides to sell his/her Crypko later on, he/she will lo
 \section{Beta Test}
 
 We have arranged an open beta of Crypko from 13th May to 5th August. 
-The user interface is public at \href{http://crypko.ai}{ crypko.ai }. Visitors can access the market via any browser (desktop or smartphone) to view the Crypkos created by beta users.
+The user interface is public at \href{http://crypko.ai}{ crypko.ai }. Visitors can access the market from any browser (desktop or mobile) to view the Crypkos created by beta users.
 
 During the beta test, a user was able to use \href{https://metamask.io/}{MetaMask plugin} in Chrome or Firefox, or a mobile wallet browser such as \href{https://trustwalletapp.com/}{Trust - Ethereum Wallet} or \href{http://www.buntoy.com/} {BUNTOY}, connect to Rinkeby test network and create an account, after which he or she could receive some Rinkeby ether from \href{https://www.rinkeby.io/#faucet}{Rinkeby faucet}, and try all features of Crypko including trading and fusion.
 
 \section{Next Steps}
 
-We plan to reduce the friction of operation (Crypko v2) and introduce more gameplay into Crypko (Crypkosmos) soon.
+Our next two steps on the development of Crypko are:
+\begin{enumerate}
+\item \textbf{Crypko v2}: reduce the friction of blockchain operations and upgrade AI techniques on anime.
+\item \textbf{Crypkosmos}: introduce gameplay into Crypko.
+\end{enumerate}
+
 We detail our proposed road map\footnote{Might subject to changes in schedule or content} in the follows.
 
 
@@ -393,16 +398,30 @@ Autumn 2018 & Crypko official release.\\
 \end{tabular}
 \end{table}
 
-\subsection{Crypko v2 - frictionless Crypko}
+\subsection{Crypko v2}
+
+\subsubsection{No, no friction}
 
 Cryptocollectible games, although having several advantages over traditional TCG games, 
 are notorious for slow transaction speed and high transaction fee (or gas fee in Ethereum jargon). 
-To address these issue, we plan to leverage Ethereum layer 2 scaling soluctions such as \cite{poon2017plasma} into the next version of Crypko, in order to make the transactions easier in terms of time and fee, 
-and to enable further game play with higher real-time requirement.
+
+To address these issues, we plan to leverage Ethereum layer 2 scaling soluctions such as \cite{poon2017plasma} into the next version of Crypko, in order to make the transactions easier in terms of time and fee, 
+and to enable further gameplay with higher real-time requirement.
+
+\subsubsection{Cutting-edge AI techniques}
+
+Our team designed anime avatar generators with remarkably high resolution and quality. Beyond these, we are dedicated to the application of various state-of-the-art AI techniques to the domain of anime.
+
+\paragraph{Facial expression transfer}
+
+In the domain of human facial images, techniques such as StarGAN \cite{choi2017stargan} enable effective facial attribute transfer and facial expression synthesis. 
+We plan to apply it to Crypko, after which a user can change the expression of his/her Crypkos.
+
+\paragraph{Body of Crypko (?)}
 
 \subsection{Crypkosmos - the world of Crypko}
 
-The true ownership of a Crypko makes it possible to create a world of Crypkos (we would like to call it \emph{Crypkosmos}), which is inspired by \href{https://www.cryptokitties.co/kittyverse}{KittyVerse}. 
+The true ownership of a Crypko makes it possible to create a world of Crypkos (we would like to call it \emph{Crypkosmos}), which is inspired by \href{https://www.cryptokitties.co/kittyverse}{KittyVerse} \cite{cryptokitties}. 
 
 Every user owns his/her unique set of Crypkos. 
 Therefore when he/she plays games licensed with Crypko's images, it is natural that he/she should also own the same set of Crypkos in these licensed game. 
