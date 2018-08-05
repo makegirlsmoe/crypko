@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[b5paper]{article}
 
 %% Language and font encodings
 \usepackage[english]{babel}
@@ -7,7 +7,10 @@
 \usepackage[parfill]{parskip}
 
 %% Sets page size and margins
-\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[b5paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% add subfigures
+\usepackage{subcaption}
 
 %% enable multiple citing at once
 \usepackage{cite}
@@ -23,6 +26,19 @@
 \usepackage[export]{adjustbox}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
+
+% packages for road map
+% https://tex.stackexchange.com/questions/196794/how-can-you-create-a-vertical-timeline
+\usepackage{array, booktabs}
+\usepackage[x11names,table]{xcolor}
+\usepackage{caption}
+
+% define CrypkoPurple used in icon: 0xB0B1D5
+\definecolor{CrypkoPurple}{RGB}{176,177,213}
+% darker purple for caption text of table
+\DeclareCaptionFont{blue}{\color{CrypkoPurple!70!black}}
+\newcommand{\RoadMapStyle}{\color{CrypkoPurple}\makebox[0pt]{\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
+
 
 %% cross-ref list
 %% https://tex.stackexchange.com/questions/1230/reference-name-of-description-list-item-in-latex
@@ -73,15 +89,38 @@
 % https://www.hipb2b.com/blog/white-paper-or-whitepaper-the-final-word-or-two/
 \title{Crypko White Paper \\
   \large Cryptocollectible Game Empowered by Generative Adversarial Networks\\
-  \rightline{\small ver 0.8.1}
+  \rightline{\small ver 0.9.0 for comike}
 }
 \author{}
 \date{}
 
 \begin{document}
+
 \maketitle
+\newpage
 
 \begin{abstract}
+
+We propose a new type of online trading card game (TCG) where cards are cryptocollectibles whose images are created by generative adversarial networks (GAN), an promising AI technique. 
+It has several advantages over conventional online TCG:
+\begin{enumerate}
+\item Each card, drawn by AI, is unique in appearance.
+\item Users can freely trade cards with effectively real money in the market.
+\item Users have true ownership of their cards, including their copyrights. % thanks to censorship-resistant Ethereum.
+\item The same set of cards can naturally extend to various games. % thanks to borderless and permissionless Etherereum
+\end{enumerate}
+
+We are developing Crypko as an example of GAN-empowered cryptocollectible games with cards of anime characters.
+The same idea can be applied to other domains of images as well.
+
+\end{abstract}
+
+% no page style on first page
+\thispagestyle{empty}
+
+\newpage
+
+\section{Introduction}
 
 The year of 2018 sees artificial intelligence and blockchain attracting wide attention.
 However, most general people feel it hard to understand or only partially understand either technology. Researchers and mass media provide beautiful blueprints, but people do not know the current stage of development in AI and blockchain, what they two can do, and how they are changing our lives. 
@@ -96,26 +135,18 @@ To address this gap, we propose Crypko, a cryptocollectible game empowered by ge
 \item By exploiting the property of generative networks, a smart contract can define and execute the fusion of two generated images, with which the game becomes more playable since the outcome of fusing is \emph{both} trackable and unpredictable. 
 \end{itemize}
 
-\end{abstract}
-
-% no page style on first page
-\thispagestyle{empty}
-
-\newpage
-
-\section{Background}
+\subsection{Cryptocollectible game}
 
 On November 28, 2017, the debut of CryptoKitties\cite{cryptokitties} brought cryptocollectible game, a new type of decentralized application (DAPP), under the spotlight, after which many companies and teams proposed their cryptocollectible games\cite{cryptomons,cryptocountries,cryptopets,cryptoarts,cryptolandmarks,cryptofighters,etheremon,etherwaifu}. As the subject of this type of games, cryptocollectibles are digital collectible whose ownership and uniqueness are secured by blockchain, and are referred to as breedable when two of them are capable of giving birth to a new one.
 
-Despite the progress, existing cryptocollectible games still leave much room for improvement to address following problems:
+Cryptocollectible game has several advantages over conventional online TCG:
+\begin{enumerate}
+\item Users can freely trade cards with effectively real money in the market.
+\item Users have true ownership (in terms of in-game property, not in real world) of their cards, thanks to censorship-resistance of Ethereum.
+\item The same set of cards can naturally extend to various games, thanks to borderless and permissionless properties of Etherereum.
+\end{enumerate}
 
-\begin{description}
-\item [Problem 1\label{problem:1}] A cryptocollectible is composed of several mutually independent parts. For breedable cryptocollectibles, the generic heredity is discontinuous and lacks coherence since parts of different categories are mutually independent.
-\item [Problem 2\label{problem:2}] Cryptocollectibles are not diverse in appearance. In a typical cryptocollectible game, there are only hundreds of types of parts, the combination of which may easily bore the players.
-\item [Problem 3\label{problem:3}] The rarity of attributes defined by the game provider determines the value of a cryptocollectible. However, in reality, the value of a collectible is determined by its natural rarity.
-\end{description}
-
-\subsection{The brand new type of DAPP pioneered by CryptoKitties}
+\subsubsection{The brand new type of DAPP pioneered by CryptoKitties}
 
 CryptoKitties pioneers a new type of DAPP in proposing following ideas. 
 We highly appreciate these innovations and would like to carry over these ideas of CryptoKitties through our Crypko.
@@ -129,7 +160,7 @@ We highly appreciate these innovations and would like to carry over these ideas 
 \end{enumerate}
 
 
-\subsection{New cryptocollectible games following CryptoKitties}
+\subsubsection{New cryptocollectible games following CryptoKitties}
 After releasing of CryptoKitties, there have been several attempts to design cryptocollectible game by extending CryptoKitties, 
 mostly by introducing battle mechanism between NFTs\cite{cryptofighters,fishbank,cryptomons,etheremon} based on smart contracts. 
 Although such mechanism is a good point in designing gameplay,
@@ -137,9 +168,18 @@ the current speed of execution of smart contracts on blockchain is preventing ef
 
 Other cryptocollectible games extend the object of NFT from cat to other animal\cite{cryptopets,etheremon}, or even beyond living things to territories\cite{cryptocountries}, places of interest\cite{cryptolandmarks} or paintings\cite{cryptoarts}. 
 Nevertheless, those game typically do not enable reproduction, 
-so players can no longer breed their own NFTs.
+so users can no longer breed their own NFTs.
 
 \subsection{Limitations of state-of-the-art cryptocollectible games}
+
+Despite the progress, existing cryptocollectible games still leave much room for improvement to address following problems:
+
+\begin{description}
+\item [Problem 1\label{problem:1}] A cryptocollectible is composed of several mutually independent parts. For breedable cryptocollectibles, the generic heredity is discontinuous and lacks coherence since parts of different categories are mutually independent.
+\item [Problem 2\label{problem:2}] Cryptocollectibles are not diverse in appearance. In a typical cryptocollectible game, there are only hundreds of types of parts, the combination of which may easily bore the users.
+\item [Problem 3\label{problem:3}] The rarity of attributes defined by the game provider determines the value of a cryptocollectible. However, in reality, the value of a collectible is determined by its natural rarity.
+\end{description}
+
 \subsubsection{Inheritance lacks continuity, and attributes lacks diversity}
 
 Placing an NFT in auction realizes its exchange value. 
@@ -149,8 +189,10 @@ serves as a significant element of a cryptocollectible game for sustainable reve
 Referring to real-world collectibles, designing an Ethereum game of breedable cryptocollectibles should also deal with the continuity of inheritance to an NFT from its parents. 
 Breeding should show heredity (at least to a certain degree), namely the passing on of physical characteristics from parents to their child, as in the real world.
 
-Existing approaches can be roughly categorized into two kinds: (1) drawing the image of every NFT though the intensive use of labor, leveraging illustration experts for showing proper way of inheritance, and (2) breaking the inheritance to a child NFT into a composition of independent parts inherited from parent NFTs. 
-Although the first kind of approaches solution could produce an image with the best quality, its intensive labor of drawing individual images for every new-born NFTs prohibits its application in breedable cryptocollectibles.
+Existing approaches can be roughly categorized into two kinds: 
+(1) drawing the image of every NFT though the intensive use of labor, leveraging illustration experts for showing proper way of inheritance, and 
+(2) breaking the inheritance to a child NFT into a composition of independent parts inherited from parent NFTs. 
+Although the first kind of approaches could produce an image with the best quality, its intensive labor of drawing individual images for every new-born NFTs prohibits its application in breedable cryptocollectibles.
 
 As a more practical yet of-less-quality solution, the second kind of approaches is adapted by typical cryptocollectible games\cite{cryptokitties,etherwaifu,cryptofighters} which determine the new NFT's gene through recombination and mutation of the parents' genes, thus the combination of parts of the child. Although it avoids the intensive labor of drawing individual images by resorting to the combination of mutually independent attributes, the breeding of NFTs inevitably degenerates into "dress up game".
 
@@ -205,8 +247,6 @@ Two possible approaches are necessary to endow generated images with exchange va
 
 Approach 1 is intuitive, but without approach 2, a user can never be free of worries when, for example, sharing on a social media the generated images he or she has purchased. Nevertheless, approach 2 seems impossible, until the arrival of ERC-721. 
 
-\newpage
-
 \section{The Product}
 
 A Crypko is a cryptocollectible card of an anime character that a user can trade or fuse with another card into a new card.
@@ -229,6 +269,12 @@ Crypko solves \ref{problem:1} - \ref{problem:3} using GAN, thereby exploring the
 
 \subsection{Continuous fusion}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.55\textwidth]{703057_tree.png}
+  \caption{Continuous fusion - origins tree}\label{origins_tree}
+\end{figure}
+
 The continuity of fusion is the property that the result of fusion does not duplicate almost any part of the materials of fusion, but is a coherent image as a whole representing a fine-grained coherent inheritance of materials.
 
 In Crypko, fusion is based on vector arithmetic operations in the latent space of the generator\cite{radford2015unsupervised}. The generator takes a representation vector as input and outputs the corresponding image. Therefore, if we ``fuse'' the genes of two images appropriately, we get a new image that shares the characteristics of both images.
@@ -239,7 +285,8 @@ As a result, fusion is no longer a simple re-combination of parts of two Crypkos
 
 Fusion introduces a little controllability to this game of randomness: if a user selects appealing Crypkos for fusion, the new Crypko will probably be appealing, too.
 
-We believe the intuitiveness of continuous fusion and the diversity of derivatives will engage players' interest.
+We believe the intuitiveness of continuous fusion and the diversity of derivatives will engage users' interest.
+
 
 \subsection{Value = Appealingness}
 
@@ -247,52 +294,144 @@ Besides continuity, the use of coding that is then processed by a generator intr
 
 \subsubsection{Complexity of implicit representations}
 
-The intention of setting up attributes of a Crypko is solely for the convenience of searching and filtering, but not for determining its value, so we refrain from any manipulation of the rarity of attributes. In fact, as the implicit representation of the appearance of a Crypko, the code determines Crypko's exquisiteness and appealingness. Therefore, in Crypko, there is no outstanding attribute -- Crypko will not be more valued because its hair is blonde rather than black -- but only outstanding code. Since the mechanism of implicit representation is exactly the black box of deep learning, no one can decipher the meaning of its code with current technology.
+The intention of setting up attributes of a Crypko is solely for the convenience of searching and filtering, but not for determining its value, so we refrain from any manipulation of the rarity of attributes.
+
+In fact, as the implicit representation of the appearance of a Crypko, the code determines Crypko's exquisiteness and appealingness. Therefore, in Crypko, there is no outstanding attribute -- Crypko will not be more valued because its hair is blonde rather than black -- but only outstanding code. 
+
+Since the mechanism of implicit representation is exactly the black box of deep learning, no one can decipher the meaning of its code with current technology.
 
 \subsubsection{Integrity of code}
 
 Since the code is indecipherable, any fragment of the code is meaningless, implying its integrity. Therefore, the fact that a Crypko is recognized as exquisite only prove its code, as a unity, but not any fragment of the code, is exquisite. Equivalently, the value of a Crypko reflects on its integrity, but not some of its parts. Therefore, we separate the value of Crypko as a cryptocollectible from its awkward and discrete labels.
 
-Consequently, the pricing rule becomes subjective, since a player cannot evaluate a Crypko by its worthless attributes or unintelligible code. The independence of attributes and price rule out the possibility to calculate the price from data. Under the circumstances, a player can only trust on the attractiveness of Crypko for pricing.
+Consequently, the pricing rule becomes subjective, since a user cannot evaluate a Crypko by its worthless attributes or unintelligible code. The independence of attributes and price rule out the possibility to calculate the price from data. Under the circumstances, a user can only trust on the attractiveness of Crypko for pricing.
 
-And this is our expected cryptocollectible game mode: players subjectively evaluate the price of Crypko by their eye, and trade and fuse correspondingly.
+And this is our expected cryptocollectible game mode: users subjectively evaluate the price of Crypko by their eye, and trade and fuse correspondingly.
 
 Our game mode has benefits over other cryptocollectible games, namely:
 
 \begin{enumerate}
     \item Significantly lower the barrier for the game. Imagine that in a real auction house or a typical cryptocollectible game, even if the user has created the account and deposited some cash, there is a psychological obstacle before trading: lacking understanding of pricing and experience in purchasing, the user might doubt that he or she can buy a worthwhile cryptocollectible. With the incomprehensible structure and parameters of a generator network and the randomness of fusion, Crypko does not grant a veteran a significant advantage over a novice.
-    \item Having crashed the objectiveness of pricing, game provider cannot easily control the market anymore. In a typical cryptocollectible game, as long as the game provider decrease the frequency of a gene, the corresponding attribute becomes rarer, and hence more valuable. However, with a subjective pricing rule, everyone has their own taste, so the market only regards Crypkos adored by the majority of players as valuable.
+    \item Having crashed the objectiveness of pricing, game provider cannot easily control the market anymore. In a typical cryptocollectible game, as long as the game provider decrease the frequency of a gene, the corresponding attribute becomes rarer, and hence more valuable. However, with a subjective pricing rule, everyone has their own taste, so the market only regards Crypkos adored by the majority of users as valuable.
 
 \end{enumerate}
 
 \subsection{Copyright belongs to the owner}
+
+\begin{figure}[!h]
+\begin{subfigure}{0.5\textwidth}
+  \includegraphics[width=\textwidth]{870796.png}
+\end{subfigure}\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}
+  \includegraphics[width=\textwidth]{871240.png}
+\end{subfigure}
+
+\caption{
+Traditional Cryptocollectible games cannot assign copyright of images to users, because collectibles with same attributes share the same image parts. Image source: CryptoKitties \cite{cryptokitties}.
+}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{subfigure}{0.5\textwidth}
+  \includegraphics[width=\textwidth]{578.jpg}
+\end{subfigure}\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}
+  \includegraphics[width=\textwidth]{280706.jpg}
+\end{subfigure}
+
+\caption{
+Crypko assigns copyright to users because even Crypkos with identical attributes does not share image parts.
+}
+\end{figure}
+
 
 Since every Crypko is unique both as an entirety and in its parts, it is possible for us to design the game such that the copyright of a Crypko belongs to its current owner rather than us, the game provider.
 
 In this way, the owner can use the image of his/her Crypko as it is for commercial usage, including usages as a character in his/her novels or RPG games. 
 
 Furthermore, the owner can create derivative works of his/her Crypko for commercial usage.
-Although there are countless derivative works based on copyright-protected anime works, such acts are in legal grey area. However, the owner of a Crypko can, without any dispute, create derivative works based on the Crypko.
+Although there are countless derivative works based on copyright-protected anime works, such acts are in the legal grey areas. However, the owner of a Crypko can, without any dispute, create derivative works based on the Crypko.
 
-It should be noticed that if the owner decide to sell his/her Crypko later on, he/she will lose the copyright of the Crypko thereafter, exactly as if he/she had sold the copyright of an artwork he/she created.
+Notice that if the owner decides to sell his/her Crypko later on, he/she will lose the copyright of the Crypko thereafter, as if he/she had sold the copyright of an artwork he/she created.
 
-\section{Proof of concept}
+\section{Beta Test}
 
-We plan to start an open beta of Crypko in early May to prove our concept, receive user feedbacks, improve user experience and enhance the overall stability of the system. We will make the user interface public at \href{http://crypko.ai}{ crypko.ai }. Visitors can access the market via desktop or smartphone and view some Crypkos.
+We have arranged an open beta of Crypko from 13th May to 5th August. 
+The user interface is public at \href{http://crypko.ai}{ crypko.ai }. Visitors can access the market via any browser (desktop or smartphone) to view the Crypkos created by beta users.
 
-A user can use \href{https://metamask.io/}{MetaMask plugin} in Chrome or Firefox, connect to Rinkeby test network and create an account, after which he or she can receive some Rinkeby ether from \href{https://www.rinkeby.io/#faucet}{Rinkeby faucet}, and try all features of Crypko including trading and fusion.
+During the beta test, a user was able to use \href{https://metamask.io/}{MetaMask plugin} in Chrome or Firefox, or a mobile wallet browser such as \href{https://trustwalletapp.com/}{Trust - Ethereum Wallet} or \href{http://www.buntoy.com/} {BUNTOY}, connect to Rinkeby test network and create an account, after which he or she could receive some Rinkeby ether from \href{https://www.rinkeby.io/#faucet}{Rinkeby faucet}, and try all features of Crypko including trading and fusion.
+
+\section{Next Step}
+
+We plan to reduce the friction of operation (Crypko v2) and introduce more gameplay into Crypko (Crypkosmos) soon.
+We detail our proposed road map \footnote{Might subject to changes in schedule or content} in the follows.
+
+\subsection{Crypko v2 - frictionless Crypko}
+
+Cryptocollectible games, although having several advantages over traditional TCG games, 
+are notorious for slow transaction speed and high transaction fee (or gas fee in Ethereum jargon). 
+To address these issue, we plan to leverage Ethereum layer 2 scaling soluctions such as \cite{poon2017plasma} into the next version of Crypko, in order to make the transactions easier in terms of time and fee, 
+and to enable further game play with higher real-time requirement.
+
+\subsection{Crypkosmos - the world of Crypko}
+
+The true ownership of a Crypko makes it possible to create a world of Crypkos (we would like to call it \emph{Crypkosmos}), which is inspired by \href{https://www.cryptokitties.co/kittyverse}{KittyVerse}. 
+
+Every user owns his/her unique set of Crypkos, 
+therefore when he/she plays games licensed with Crypko's images, 
+it is natural that he/she should also own the same set of Crypkos in these licensed game. 
+For example, if someone developed an idol management game using Crypko's images under the permission of Crypko team, then a user can play the game with his/her Crypkos joining idol activities.
+
+In another word, we envision the funciton of Crypko as both a marketplace and a card mint, 
+and derivative games can be built upon Crypko, together forming the Crypkosmos. 
+We plan to provide the necessary API and instruction to encourage developers create online card games based on Crypko cards by 
+
+Since selling a Crypko implies selling anything related to the Crypko in Crypkosmos, 
+if users value these in-game achievements or rare items, 
+the value of a Crypko will be influenced by their activities in the derivative games. 
+For example, we should expect a higher price when a Crypko has high charisma points in a derivative idol management game and a high level or equipped with rare items in a derivative MMORPG.
+We plan to provide support in form of trading mechanism to accommodate such case.
+
+\begin{table}
+\centering
+\renewcommand\arraystretch{1.4}\arrayrulecolor{CrypkoPurple}
+\captionsetup{singlelinecheck=false, font=blue, labelfont=sc, labelsep=quad, justification=centering}
+\caption*{Road Map}\vskip -1.5ex
+\begin{tabular}{@{\,}r <{\hskip 2pt} !{\RoadMapStyle} >{\raggedright\arraybackslash}p{7cm}}
+\toprule
+\addlinespace[1.5ex]
+Dec 2017 & Crypko project started.\\
+Jan 2018 & Prototype completed.\\
+Feb 2018 & Generative model "Daisy" trained. \\
+Apr 2018 & Open beta pre-registration began.\\
+May 2018 & Open beta started.\\
+Summer 2018& Open beta ended.\\
+& Popularity poll of beta Crypkos.\\
+Autumn 2018 & Crypko official release.\\
+ & Crypkosmos project start.\\
+ & Crypko v2 project start.\\
+ Winter 2018 & Crypko v2 closed beta.\\
+ & Crypkosmos API documentation.\\
+ 2019 & Crypko v2 official release.\\
+ & Crypkosmos extends to Crypko v2.\\
+ 
+\end{tabular}
+\end{table}
 
 \section{Conclusion}
 
-Since GAN is a general technique for image generation, we expect Crypko go beyond being an yet-another new member of cryptocollectible games. 
+Given GAN as a promising technique for image generation, we expect Crypko go beyond being an yet-another new member of cryptocollectible games. 
 We want to inspire the market of homogeneous cryptocollectible games with more games where a collectible has inner value and the game is both fun and rational.
 
 On the other hand, since ERC-721 endows digital properties with value, 
 we expect that after Crypko is deployed on Ethereum, 
-there will be more deep learning developers willing to turn their generative models such as GAN, VAE or LSTM 
-into a practical blockchain game demonstrating AI's value in creation. Meanwhile, we believe in the survival of the fittest tokens, which will, in turn, encourage the development of generative models.
+there will be more deep learning developers willing to turn their generative models such as GAN~\cite{goodfellow2014generative}, VAE~\cite{kingma2013auto} or LSTM~\cite{hochreiter1997long} 
+into a practical blockchain game demonstrating AI's value in creation. 
+Meanwhile, we believe in the survival of the fittest tokens, which will, in turn, encourage the development of generative models.
 
 Furthermore, by assigning the publicly verifiable copyright of a Crypko to its owner, we believe that Crypko can provide inspiration for creation of derivative works.
+
+To make the game play more interesting, we are actively working on Crypko v2 and Crypkosmos, reducing the friction of operation and introducing more game play into Crypko.
 
 We wish that the high-quality generative model of Crypko and the intuitive evaluation standard will attract more people to the game of cryptocollectible. We do not know how public will react towards Crypko, but we believe it proves the combination blockchain and AI can be simultaneously practical, meaningful, and fun.
 
@@ -309,3 +448,5 @@ Rare collectibles are valuable, but we genuinely believe that we should not stic
 \bibliography{bibliography}
 
 \end{document}
+
+
