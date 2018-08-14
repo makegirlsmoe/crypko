@@ -1,4 +1,4 @@
-\documentclass[b5paper]{article}
+\documentclass[a4paper]{article}
 
 %% Language and font encodings
 \usepackage[english]{babel}
@@ -88,7 +88,7 @@
 % better use white paper?
 % https://www.hipb2b.com/blog/white-paper-or-whitepaper-the-final-word-or-two/
 \title{Crypko White Paper \\
-  \large Cryptocollectible Game Empowered by Generative Adversarial Networks\\
+  \large A Cryptocollectible Game Empowered by Generative Adversarial Networks\\
   \rightline{\small ver 0.9.0 for comike}
 }
 \author{}
@@ -405,19 +405,19 @@ Autumn 2018 & Crypko official release.\\
 Cryptocollectible games, although having several advantages over traditional TCG games, 
 are notorious for slow transaction speed and high transaction fee (or gas fee in Ethereum jargon). 
 
-To address these issues, we plan to leverage Ethereum layer 2 scaling soluctions such as \cite{poon2017plasma} into the next version of Crypko, in order to make the transactions easier in terms of time and fee, 
+To address these issues, we plan to leverage Ethereum layer 2 scaling solutions such as \cite{poon2017plasma} into the next version of Crypko, in order to make the transactions easier in terms of time and fee, 
 and to enable further gameplay with higher real-time requirement.
 
 \subsubsection{Cutting-edge AI techniques}
 
 Our team designed anime avatar generators with remarkably high resolution and quality. Beyond these, we are dedicated to the application of various state-of-the-art AI techniques to the domain of anime.
 
-\paragraph{Facial expression transfer}
+\paragraph{Facial expression}
 
 In the domain of human facial images, techniques such as StarGAN \cite{choi2017stargan} enable effective facial attribute transfer and facial expression synthesis. 
-We plan to apply it to Crypko, after which a user can change the expression of his/her Crypkos.
+As the first step, we plan to experiment with the anime facial attribute transfer, after which a user can change the expression of his/her Crypkos.
 
-\paragraph{Body of Crypko (?)}
+
 
 \subsection{Crypkosmos - the world of Crypko}
 
@@ -430,11 +430,14 @@ For example, if someone developed an idol management game using Crypko's images 
 Since selling a Crypko implies selling everything related to the Crypko in Crypkosmos, 
 if users value these in-game achievements or rare items, 
 the value of a Crypko will be influenced by their activities in the derivative games. 
-For example, we should expect a higher price when a Crypko has high charisma points in a derivative idol management game and a high level or rare equipments in a derivative MMORPG.
+For example, we should expect a higher price when a Crypko has high charisma points in a derivative idol management game and a high level or rare equipments in a derivative multiplayer game.
 
 In another word, we envision the function of Crypko as both a marketplace and a card mint, 
 and derivative games can be built upon Crypko, together forming the Crypkosmos. 
 We plan to provide the necessary API and instruction to encourage developers to create online card games based on Crypko cards.
+
+For example, RPG Maker MV \cite{rpgmaker} is a popular and easy-to-use multi-platform RPG game engine. As RPG Maker MV is fully written in Javascript, integrating Ethereum blockchain client library (Web3.js) as a plugin is straightforward. By using our SDK, the game developer could require the user to authorize with his private key. So all Crypkos the user owned can be directly fetched from the blockchain and appear in the game as player characters.
+
 
 \section{Conclusion}
 
